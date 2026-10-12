@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "Please cite this software release and the relevant mathematical sources."
+type: software
+title: "Mechanical Lie: exact symbolic mechanical Hamiltonian brackets"
+version: 0.1.0
+date-released: "2026-10-13"
+license: BSD-3-Clause
+authors:
+  - family-names: Jin
+    given-names: Kaiwen
+    email: yui.ui.siki@gmail.com
+repository-code: "https://github.com/yuiyuiui/mechanical-lie"
+url: "https://github.com/yuiyuiui/mechanical-lie/releases/tag/v0.1.0"
+abstract: "Exact canonical-tree brackets, rational polynomial realization and finite validation for Euclidean mechanical Hamiltonians."
+keywords:
+  - Poisson brackets
+  - mechanical Hamiltonians
+  - symbolic computation
+  - geometric integration
+references:
+  - type: article
+    title: "The Lie algebra of classical mechanics"
+    authors:
+      - family-names: McLachlan
+        given-names: R. I.
+      - family-names: Murua
+        given-names: Ander
+    year: 2019
+    journal: Journal of Computational Dynamics
+    volume: "6"
+    issue: "2"
+    start: "345"
+    end: "360"
+    doi: 10.3934/jcd.2019017

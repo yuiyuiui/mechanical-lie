@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "historical_dimensions": {
+    "source_url": "https://raw.githubusercontent.com/yuiyuiui/AIM/8dc12e3f97d7c2230981ad0d46ab00aa06188bfd/research/solutions/519-euclidean-mechanical-lie-algebra/numerical_case/summaries/rank_summary.csv",
+    "sha256": "341be7eda0e4640fbf5a89e73b600c8b7a03e3a835472a526b4d89781d527dfb",
+    "max_order": 18,
+    "prime": 1000003,
+    "status": "Reuse of a previously computed public scalar table; not a new order-18 run"
+  },
+  "fresh_case": {
+    "actual_parameters": {
+      "reconstruction_max_order": 10,
+      "prime": 1000003,
+      "coefficient_checks_max_order": 6,
+      "dimensions": [
+        1,
+        2
+      ],
+      "potential_degree": 4,
+      "workers": 1
+    },
+    "validation_status": "COMPLETE",
+    "blocks_replayed": 31,
+    "total_columns": 104,
+    "full_polynomial_comparisons": 32,
+    "source_sha256": {
+      "src/mechanical_lie/__init__.py": "bfd7efe272549384f8766d1da101bccb0b33381e16a9ca1c1c6f473a2eb534a0",
+      "src/mechanical_lie/_engine/__init__.py": "0ddb1b8b130b7338d844b512b8138cd87b88a78fbfb33835f4fb245f22b91ee7",
+      "src/mechanical_lie/_engine/associative.py": "2e1c7dc31e347ef76598eedc966122803b301422e8a4686670267de9c661bd02",
+      "src/mechanical_lie/_engine/audit.py": "af90f5ec4a2ce75e41f7750918b30ccf6fe5367c231b50872decfac52bbe4fc1",
+      "src/mechanical_lie/_engine/certificates.py": "eb2061d13b3e2ff3fabde2ee7d0fbc8ab1ffa4b8a4fd3913e548ca4d336b76e8",
+      "src/mechanical_lie/_engine/core.py": "72c49ceb7cd7dbe12db1334efcaa5a5488497d4583b1684f03dc05d56f246d6a",
+      "src/mechanical_lie/_engine/errors.py": "f3bcfa4d0854c43dfc811b16047f258d05fe08d9c506616ae722e5fb6feb314e",
+      "src/mechanical_lie/_engine/linear.py": "09a932e4b9df0acaa2f8601b195874e6469dfe2c613fed0af30b64a27ee9a5d1",
+      "src/mechanical_lie/_engine/magmatic.py": "bc851e47d9f53a5bc6872d2c43085504f8c9cf721e1fffbbe34bbc1f391c7915",
+      "src/mechanical_lie/_engine/mechanical.py": "0034e1218d0857a6135ea28634761023dfaf264baea03046a2c29617291e015d",
+      "src/mechanical_lie/_engine/polynomial.py": "47d3159f570d2683867bceba57406becae789430b06ac511739c8fa642876392",
+      "src/mechanical_lie/algebra.py": "5f6721849176a6e2887816e60f73917d837738a9e16236b2e1ab6e462be2644b",
+      "src/mechanical_lie/hamiltonian.py": "c6270347795d6e58f1ad02664c1f4976cb03569203c2f11ce39fcca436ffcf0b",
+      "src/mechanical_lie/linear.py": "f96ffbaac83c521af9071d8c036ccbd7d07ee1c9f05f36059d1b8066ff9be3c0",
+      "src/mechanical_lie/polynomial.py": "fb185cd79b3eace32289ba151adee1b23425b96df57ee7db2587028b82ef32b3",
+      "src/mechanical_lie/validation.py": "d55f059b2a7fc041f6d15162ed6a53bc0d15d59ca4b0c88c54cdda42c203cc91",
+      "numerical_case/compute_cases.py": "1dfe35705f7859ffe93eb4e2eb351cb89ac09e999effdd867640d0346fb2cea2"
+    },
+    "compact_output_sha256": {
+      "checks.json": "0930b63bd2e640d39a45d44ed4f2fbb123f547843cfd9734e6e9414fc9aeeda6",
+      "sparsity.csv": "971165debe624bb4ca53d6f48f9825e01c7566faa51cba3f134987d0747a6ed6",
+      "matrix_pattern.json": "357798b31f514f27dc8cbb0b5b88d52cac4ffa53ea035bda4dfc74ebbef21fd2",
+      "tree_examples.json": "3a0409a988d0efaae5d7f28f269d188537e75767d53825c323ecb329ec8a993f"
+    }
+  },
+  "arithmetic": "Exact integers and Fraction; plots use floating coordinates only",
+  "limitations": "Finite computations and software tests do not establish all-order theorems."
+}

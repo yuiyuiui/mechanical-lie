@@ -1,0 +1,131 @@
+{
+  "potential": {
+    "dimension": 1,
+    "terms": [
+      {
+        "exponents": [
+          2,
+          0
+        ],
+        "coefficient": "1/2"
+      },
+      {
+        "exponents": [
+          4,
+          0
+        ],
+        "coefficient": "1/4"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "V",
+      "trees": [
+        {
+          "tree": [
+            0,
+            []
+          ],
+          "coefficient": "1"
+        }
+      ],
+      "polynomial": "1/4*q1^4 + 1/2*q1^2",
+      "polynomial_terms": {
+        "dimension": 1,
+        "terms": [
+          {
+            "exponents": [
+              2,
+              0
+            ],
+            "coefficient": "1/2"
+          },
+          {
+            "exponents": [
+              4,
+              0
+            ],
+            "coefficient": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "{V,T}",
+      "trees": [
+        {
+          "tree": [
+            1,
+            []
+          ],
+          "coefficient": "1"
+        }
+      ],
+      "polynomial": "q1^3*p1 + q1*p1",
+      "polynomial_terms": {
+        "dimension": 1,
+        "terms": [
+          {
+            "exponents": [
+              1,
+              1
+            ],
+            "coefficient": "1"
+          },
+          {
+            "exponents": [
+              3,
+              1
+            ],
+            "coefficient": "1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "{V,{V,T}}",
+      "trees": [
+        {
+          "tree": [
+            0,
+            [
+              [
+                0,
+                []
+              ]
+            ]
+          ],
+          "coefficient": "1"
+        }
+      ],
+      "polynomial": "q1^6 + 2*q1^4 + q1^2",
+      "polynomial_terms": {
+        "dimension": 1,
+        "terms": [
+          {
+            "exponents": [
+              2,
+              0
+            ],
+            "coefficient": "1"
+          },
+          {
+            "exponents": [
+              4,
+              0
+            ],
+            "coefficient": "2"
+          },
+          {
+            "exponents": [
+              6,
+              0
+            ],
+            "coefficient": "1"
+          }
+        ]
+      }
+    }
+  ]
+}
