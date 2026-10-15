@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from fractions import Fraction
 from itertools import product
 
 from ._engine import core as engine
-from .polynomial import Polynomial, exact, phase_space, positive_int
+from ._policy import DEFAULT_MAX_ASSIGNMENTS, assignment_limit
+from .polynomial import Polynomial, exact, phase_space
 
 
 def _tree(code):
@@ -29,6 +30,36 @@ def _tree(code):
     check(code)
     colors, adjacency = engine.decode_mechanical(code)
     return engine.canonical(colors, adjacency)
+
+
+@dataclass(frozen=True)
+class RealizationPlan:
+    """Exact loop counts and the effective resource guard, without contraction."""
+
+    dimension: int
+    tree_assignments: tuple[int, ...]
+    max_assignments: int
+    selection_reason: str
+    backend: str = "exact-rational"
+
+    @property
+    def largest_assignments(self) -> int:
+        return max(self.tree_assignments, default=0)
+
+    @property
+    def total_assignments(self) -> int:
+        return sum(self.tree_assignments)
+
+    @property
+    def within_limit(self) -> bool:
+        return self.largest_assignments <= self.max_assignments
+
+    def to_dict(self) -> dict:
+        return asdict(self) | {
+            "largest_assignments": self.largest_assignments,
+            "total_assignments": self.total_assignments,
+            "within_limit": self.within_limit,
+        }
 
 
 @dataclass(frozen=True, init=False)
@@ -97,19 +128,46 @@ class Hamiltonian:
             raise ZeroDivisionError("Division by zero")
         return self * (1 / scalar)
 
-    def realize(self, potential: Polynomial, *, max_assignments: int = 100000) -> Polynomial:
-        """Contract every tree to a complete exact polynomial for V(q).
+    def realization_plan(
+        self, potential: Polynomial, *, max_assignments: int = DEFAULT_MAX_ASSIGNMENTS
+    ) -> RealizationPlan:
+        """Report d**(edges+momentum leaves) per tree; kinetic terms cost zero here.
 
-        Reject momentum-dependent potentials and a tree whose index-assignment
-        count exceeds the explicit cap. This cap does not bound polynomial
-        term growth or the total runtime across an arbitrary expression.
+        This counts contraction assignments, not polynomial products or bytes.
+        A plan over the cap is still returned for inspection; realize rejects it.
         """
         if not isinstance(potential, Polynomial):
             raise TypeError("potential must be a Polynomial")
         d = potential.dimension
         if any(any(a[d:]) for a in potential.terms):
             raise ValueError("The potential must depend only on position variables")
-        positive_int(max_assignments, "max_assignments")
+        limit, reason = assignment_limit(max_assignments)
+        counts = []
+        for tree, _ in self._items:
+            if tree is None:
+                counts.append(0)
+            else:
+                colors, adjacency = engine.decode_mechanical(tree)
+                edges = sum(map(len, adjacency)) // 2
+                counts.append(d ** (edges + sum(colors)))
+        return RealizationPlan(d, tuple(counts), limit, reason)
+
+    def realize(
+        self, potential: Polynomial, *, max_assignments: int = DEFAULT_MAX_ASSIGNMENTS
+    ) -> Polynomial:
+        """Contract every tree to a complete exact polynomial for V(q).
+
+        Reject momentum-dependent potentials and a tree whose index-assignment
+        count exceeds the explicit cap. This cap does not bound polynomial
+        term growth or the total runtime across an arbitrary expression.
+        """
+        plan = self.realization_plan(potential, max_assignments=max_assignments)
+        if not plan.within_limit:
+            raise ValueError(
+                f"Tree requires {plan.largest_assignments} index assignments; "
+                f"cap is {plan.max_assignments}. Inspect realization_plan before raising the cap."
+            )
+        d = potential.dimension
         result = Polynomial.constant(d, 0)
         _, momenta = phase_space(d)
         derivatives = {}
@@ -120,11 +178,6 @@ class Hamiltonian:
             colors, adjacency = engine.decode_mechanical(tree)
             edges = [(i, j) for i, row in enumerate(adjacency) for j in row if i < j]
             free = [i for i, count in enumerate(colors) for _ in range(count)]
-            assignments = d ** (len(edges) + len(free))
-            if assignments > max_assignments:
-                raise ValueError(
-                    f"Tree requires {assignments} index assignments; cap is {max_assignments}"
-                )
             value = Polynomial.constant(d, 0)
             for labels in product(range(d), repeat=len(edges) + len(free)):
                 counts = [[0] * d for _ in colors]

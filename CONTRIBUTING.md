@@ -19,6 +19,15 @@ full suite against that wheel. Do not put `src` on PYTHONPATH when claiming
 an installed-package test. CI follows this pattern and also tests an sdist
 build and the README's worked example.
 
+Run `python examples/parameters.py` and the matched comparisons documented in
+`bench/README.md`. They validate default/explicit resource guards and fields
+against complete independent outputs. New method choices must share one resolver
+between API and scripts, disclose their effective settings/reasons, and preserve
+problem-defining inputs. Do not add cosmetic accuracy modes to exact arithmetic.
+Document every parameter's type, range, default, recommendation and work/output
+consequences; keep the independent-review boundary and explicit AI-created
+provenance statement when updating the software.
+
 New symbolic operations should include a hand calculation, sign/degree checks
 and an independent exact reference. Preserve dimension and float-input errors.
 Treat finite rank as finite evidence. Performance claims need matched cases,

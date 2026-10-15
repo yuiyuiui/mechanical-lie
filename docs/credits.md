@@ -30,7 +30,11 @@ The mathematical background is attributable to these primary sources:
    Items 3–4 concern the associated manuscript's structural proof, not extra
    runtime algorithms or a software validation certificate.
 
-OpenAI ChatGPT and OpenAI Codex assisted as described in the README. No
+The implementation, API, tests, benchmarks and documentation were produced by
+AI agents under Kaiwen Jin's direction. OpenAI ChatGPT participated in the
+initial research/code development; OpenAI Codex produced the standalone package
+and its subsequent parameter-policy maintenance. This is AI-created software,
+not a claim of line-by-line human verification. No
 independent human review, journal acceptance, novelty priority or all-order
 software certification is claimed. No third-party source code is vendored.
 SymPy and Matplotlib are optional installed dependencies under their own

@@ -1,0 +1,1230 @@
+{
+  "schema": "mechanical-lie-policy-benchmark-v1",
+  "version": "0.2.0",
+  "command": "python bench/benchmark_policies.py --output <fresh-directory> --repeats 3",
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "sympy": "1.14.0",
+    "workers": 1,
+    "random_seed": null,
+    "randomness": "none",
+    "native_thread_caps": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    }
+  },
+  "git_commit_observed": "6b247f71744d6b8fc1f71e5f02288a9fd9919d0f",
+  "source_sha256": {
+    "src/mechanical_lie/__init__.py": "e7ffa99f78de392d599ad3892b06b489ce99a1a0fabb1052cd745f5e6d8c0fb7",
+    "src/mechanical_lie/_engine/__init__.py": "0ddb1b8b130b7338d844b512b8138cd87b88a78fbfb33835f4fb245f22b91ee7",
+    "src/mechanical_lie/_engine/associative.py": "2e1c7dc31e347ef76598eedc966122803b301422e8a4686670267de9c661bd02",
+    "src/mechanical_lie/_engine/audit.py": "6fa04e070cf5ac09c6e9e5baf1ac28af3194eb1beb8e82fba9e608f0b6539cb0",
+    "src/mechanical_lie/_engine/certificates.py": "eb2061d13b3e2ff3fabde2ee7d0fbc8ab1ffa4b8a4fd3913e548ca4d336b76e8",
+    "src/mechanical_lie/_engine/core.py": "72c49ceb7cd7dbe12db1334efcaa5a5488497d4583b1684f03dc05d56f246d6a",
+    "src/mechanical_lie/_engine/errors.py": "f3bcfa4d0854c43dfc811b16047f258d05fe08d9c506616ae722e5fb6feb314e",
+    "src/mechanical_lie/_engine/linear.py": "09a932e4b9df0acaa2f8601b195874e6469dfe2c613fed0af30b64a27ee9a5d1",
+    "src/mechanical_lie/_engine/magmatic.py": "bc851e47d9f53a5bc6872d2c43085504f8c9cf721e1fffbbe34bbc1f391c7915",
+    "src/mechanical_lie/_engine/mechanical.py": "0034e1218d0857a6135ea28634761023dfaf264baea03046a2c29617291e015d",
+    "src/mechanical_lie/_engine/polynomial.py": "47d3159f570d2683867bceba57406becae789430b06ac511739c8fa642876392",
+    "src/mechanical_lie/_policy.py": "036859a929ffe6bb66fe59f5cdca3ea381584fce6d3deed11b6df0bd6e6be1b2",
+    "src/mechanical_lie/algebra.py": "70114a7c44d8ef8ccdb1725191aaf8a1354c39275fd0b3e18d3039e8d7e493a0",
+    "src/mechanical_lie/hamiltonian.py": "ae67e7466069d5b96b1b9f99bb1e704d4ae3e0934169fd33aab2d5c8081be161",
+    "src/mechanical_lie/linear.py": "eb34046c3bda01528d8236d34c9cf0b924d1a8c76b4e3efd8cd2baa0d9053207",
+    "src/mechanical_lie/polynomial.py": "fb185cd79b3eace32289ba151adee1b23425b96df57ee7db2587028b82ef32b3",
+    "src/mechanical_lie/validation.py": "c8b8ec082744bfd87c5a088f94c16b3d5881cb13c97026aa10335c2ec0e297e3",
+    "bench/benchmark_policies.py": "9b008b4b0d172059012d61a590cb60268bd504434a14bc99974d13d3874ff83c"
+  },
+  "measurement": {
+    "repeats": 3,
+    "warmups_per_configuration": 1,
+    "trial_order": "rotating round-robin on the same process and inputs",
+    "time": "instrumented warm API/pipeline calls include policy and input validation; imports, independent references and final result comparison excluded",
+    "memory": "peak Python allocations during the call, not total process RSS or a universal memory bound",
+    "reconstruction_time": "includes temporary output setup, full rebuild, replay and cleanup"
+  },
+  "records": [
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "dimension": 1,
+        "tree_assignments": [
+          1,
+          1
+        ],
+        "max_assignments": 100000,
+        "selection_reason": "Standard per-tree safeguard of 100000 assignments; an engineering limit, not an accuracy setting or a total memory/time guarantee.",
+        "backend": "exact-rational",
+        "largest_assignments": 1,
+        "total_assignments": 2,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.00048041704576462507,
+        0.0004455419257283211,
+        0.0004582080291584134
+      ],
+      "median_elapsed_seconds": 0.0004582080291584134,
+      "peak_traced_bytes": 5208,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d1",
+      "input_setup_seconds": 0.00022904190700501204,
+      "dimension": 1,
+      "input_potential": [
+        [
+          [
+            2,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 3,
+      "exact_output_sha256": "c98db9b0c5d330a5e96f82c8d2c70cc4bc766e7f3a054af67bcba0ae7d1972a2",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "minimum-admitting-cap",
+      "effective_configuration": {
+        "dimension": 1,
+        "tree_assignments": [
+          1,
+          1
+        ],
+        "max_assignments": 1,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 1,
+        "total_assignments": 2,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.0004515829496085644,
+        0.0005148750497028232,
+        0.00045604107435792685
+      ],
+      "median_elapsed_seconds": 0.00045604107435792685,
+      "peak_traced_bytes": 5352,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d1",
+      "input_setup_seconds": 0.00022904190700501204,
+      "dimension": 1,
+      "input_potential": [
+        [
+          [
+            2,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 3,
+      "exact_output_sha256": "c98db9b0c5d330a5e96f82c8d2c70cc4bc766e7f3a054af67bcba0ae7d1972a2",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "larger-explicit-cap",
+      "effective_configuration": {
+        "dimension": 1,
+        "tree_assignments": [
+          1,
+          1
+        ],
+        "max_assignments": 200000,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 1,
+        "total_assignments": 2,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.00045254104770720005,
+        0.0004595828941091895,
+        0.000448708888143301
+      ],
+      "median_elapsed_seconds": 0.00045254104770720005,
+      "peak_traced_bytes": 5344,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d1",
+      "input_setup_seconds": 0.00022904190700501204,
+      "dimension": 1,
+      "input_potential": [
+        [
+          [
+            2,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 3,
+      "exact_output_sha256": "c98db9b0c5d330a5e96f82c8d2c70cc4bc766e7f3a054af67bcba0ae7d1972a2",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "dimension": 2,
+        "tree_assignments": [
+          8,
+          8
+        ],
+        "max_assignments": 100000,
+        "selection_reason": "Standard per-tree safeguard of 100000 assignments; an engineering limit, not an accuracy setting or a total memory/time guarantee.",
+        "backend": "exact-rational",
+        "largest_assignments": 8,
+        "total_assignments": 16,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.002004374982789159,
+        0.0020611670333892107,
+        0.0020358749898150563
+      ],
+      "median_elapsed_seconds": 0.0020358749898150563,
+      "peak_traced_bytes": 15368,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d2",
+      "input_setup_seconds": 0.00019037490710616112,
+      "dimension": 2,
+      "input_potential": [
+        [
+          [
+            0,
+            2,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 11,
+      "exact_output_sha256": "880774577815d03c9236209633955aef9cf3aec04a19a3ec91b6fba7da0a3563",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "minimum-admitting-cap",
+      "effective_configuration": {
+        "dimension": 2,
+        "tree_assignments": [
+          8,
+          8
+        ],
+        "max_assignments": 8,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 8,
+        "total_assignments": 16,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.002098000026308,
+        0.0020786250242963433,
+        0.0020740419859066606
+      ],
+      "median_elapsed_seconds": 0.0020786250242963433,
+      "peak_traced_bytes": 15512,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d2",
+      "input_setup_seconds": 0.00019037490710616112,
+      "dimension": 2,
+      "input_potential": [
+        [
+          [
+            0,
+            2,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 11,
+      "exact_output_sha256": "880774577815d03c9236209633955aef9cf3aec04a19a3ec91b6fba7da0a3563",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "larger-explicit-cap",
+      "effective_configuration": {
+        "dimension": 2,
+        "tree_assignments": [
+          8,
+          8
+        ],
+        "max_assignments": 200000,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 8,
+        "total_assignments": 16,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.0020608750637620687,
+        0.0020172089571133256,
+        0.0021453750086948276
+      ],
+      "median_elapsed_seconds": 0.0020608750637620687,
+      "peak_traced_bytes": 15512,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d2",
+      "input_setup_seconds": 0.00019037490710616112,
+      "dimension": 2,
+      "input_potential": [
+        [
+          [
+            0,
+            2,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 11,
+      "exact_output_sha256": "880774577815d03c9236209633955aef9cf3aec04a19a3ec91b6fba7da0a3563",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "dimension": 3,
+        "tree_assignments": [
+          27,
+          27
+        ],
+        "max_assignments": 100000,
+        "selection_reason": "Standard per-tree safeguard of 100000 assignments; an engineering limit, not an accuracy setting or a total memory/time guarantee.",
+        "backend": "exact-rational",
+        "largest_assignments": 27,
+        "total_assignments": 54,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.006182832992635667,
+        0.006170124979689717,
+        0.006082166917622089
+      ],
+      "median_elapsed_seconds": 0.006170124979689717,
+      "peak_traced_bytes": 37728,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d3",
+      "input_setup_seconds": 0.00026404205709695816,
+      "dimension": 3,
+      "input_potential": [
+        [
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 20,
+      "exact_output_sha256": "862f6eec142cda6443037cf56967601e190e7ab1d55d3bea2558f414b9193814",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "minimum-admitting-cap",
+      "effective_configuration": {
+        "dimension": 3,
+        "tree_assignments": [
+          27,
+          27
+        ],
+        "max_assignments": 27,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 27,
+        "total_assignments": 54,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.006007125019095838,
+        0.006014415994286537,
+        0.006074542063288391
+      ],
+      "median_elapsed_seconds": 0.006014415994286537,
+      "peak_traced_bytes": 37872,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d3",
+      "input_setup_seconds": 0.00026404205709695816,
+      "dimension": 3,
+      "input_potential": [
+        [
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 20,
+      "exact_output_sha256": "862f6eec142cda6443037cf56967601e190e7ab1d55d3bea2558f414b9193814",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "larger-explicit-cap",
+      "effective_configuration": {
+        "dimension": 3,
+        "tree_assignments": [
+          27,
+          27
+        ],
+        "max_assignments": 200000,
+        "selection_reason": "Explicit per-tree safeguard; accepted calculations remain complete and exact.",
+        "backend": "exact-rational",
+        "largest_assignments": 27,
+        "total_assignments": 54,
+        "within_limit": true
+      },
+      "elapsed_seconds": [
+        0.006002041976898909,
+        0.006040457985363901,
+        0.006213875021785498
+      ],
+      "median_elapsed_seconds": 0.006040457985363901,
+      "peak_traced_bytes": 37872,
+      "validation": "PASS",
+      "category": "realization",
+      "case": "coupled-quartic-d3",
+      "input_setup_seconds": 0.00026404205709695816,
+      "dimension": 3,
+      "input_potential": [
+        [
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ],
+        [
+          [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/3"
+        ],
+        [
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/2"
+        ],
+        [
+          [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "1/4"
+        ]
+      ],
+      "source_tree_count": 2,
+      "output_terms": 20,
+      "exact_output_sha256": "862f6eec142cda6443037cf56967601e190e7ab1d55d3bea2558f414b9193814",
+      "exact_reference": "complete direct Poisson and independent SymPy coefficients"
+    },
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "prime": 1000003,
+        "backend": "sparse-modular",
+        "selection_reason": "Fixed standard prime 1000003, balancing modest integer arithmetic with a non-tiny field; no matrix-dependent prime search or rational-rank claim."
+      },
+      "elapsed_seconds": [
+        0.0009454999817535281,
+        0.0009431249927729368,
+        0.0009293749462813139
+      ],
+      "median_elapsed_seconds": 0.0009431249927729368,
+      "peak_traced_bytes": 2510,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-6",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        }
+      ],
+      "rational_reference_rank": 6,
+      "observed_rank": 6,
+      "integer_nonzeros": 11,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "explicit-small-field",
+      "effective_configuration": {
+        "prime": 2,
+        "backend": "sparse-modular",
+        "selection_reason": "Explicit prime defines the finite field; rank may differ from other fields."
+      },
+      "elapsed_seconds": [
+        3.966607619076967e-05,
+        3.74580267816782e-05,
+        3.787502646446228e-05
+      ],
+      "median_elapsed_seconds": 3.787502646446228e-05,
+      "peak_traced_bytes": 2510,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-6",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        }
+      ],
+      "rational_reference_rank": 6,
+      "observed_rank": 6,
+      "integer_nonzeros": 11,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "explicit-prime-101",
+      "effective_configuration": {
+        "prime": 101,
+        "backend": "sparse-modular",
+        "selection_reason": "Explicit prime defines the finite field; rank may differ from other fields."
+      },
+      "elapsed_seconds": [
+        4.850002005696297e-05,
+        4.9915979616343975e-05,
+        4.8166955821216106e-05
+      ],
+      "median_elapsed_seconds": 4.850002005696297e-05,
+      "peak_traced_bytes": 2510,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-6",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        }
+      ],
+      "rational_reference_rank": 6,
+      "observed_rank": 6,
+      "integer_nonzeros": 11,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "prime": 1000003,
+        "backend": "sparse-modular",
+        "selection_reason": "Fixed standard prime 1000003, balancing modest integer arithmetic with a non-tiny field; no matrix-dependent prime search or rational-rank claim."
+      },
+      "elapsed_seconds": [
+        0.000996250077150762,
+        0.0009913749527186155,
+        0.0009968329686671495
+      ],
+      "median_elapsed_seconds": 0.000996250077150762,
+      "peak_traced_bytes": 4419,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-12",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        },
+        {
+          "r6": 1,
+          "r5": 2
+        },
+        {
+          "r7": 1,
+          "r6": 2
+        },
+        {
+          "r8": 1,
+          "r7": 2
+        },
+        {
+          "r9": 1,
+          "r8": 2
+        },
+        {
+          "r10": 1,
+          "r9": 2
+        },
+        {
+          "r11": 1,
+          "r10": 2
+        }
+      ],
+      "rational_reference_rank": 12,
+      "observed_rank": 12,
+      "integer_nonzeros": 23,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "explicit-small-field",
+      "effective_configuration": {
+        "prime": 2,
+        "backend": "sparse-modular",
+        "selection_reason": "Explicit prime defines the finite field; rank may differ from other fields."
+      },
+      "elapsed_seconds": [
+        7.354107219725847e-05,
+        7.099995855242014e-05,
+        7.187505252659321e-05
+      ],
+      "median_elapsed_seconds": 7.187505252659321e-05,
+      "peak_traced_bytes": 4368,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-12",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        },
+        {
+          "r6": 1,
+          "r5": 2
+        },
+        {
+          "r7": 1,
+          "r6": 2
+        },
+        {
+          "r8": 1,
+          "r7": 2
+        },
+        {
+          "r9": 1,
+          "r8": 2
+        },
+        {
+          "r10": 1,
+          "r9": 2
+        },
+        {
+          "r11": 1,
+          "r10": 2
+        }
+      ],
+      "rational_reference_rank": 12,
+      "observed_rank": 12,
+      "integer_nonzeros": 23,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "explicit-prime-101",
+      "effective_configuration": {
+        "prime": 101,
+        "backend": "sparse-modular",
+        "selection_reason": "Explicit prime defines the finite field; rank may differ from other fields."
+      },
+      "elapsed_seconds": [
+        9.300000965595245e-05,
+        8.737505413591862e-05,
+        9.04579646885395e-05
+      ],
+      "median_elapsed_seconds": 9.04579646885395e-05,
+      "peak_traced_bytes": 4413,
+      "validation": "PASS",
+      "category": "modular-rank",
+      "case": "unit-triangular-12",
+      "columns": [
+        {
+          "r0": 1
+        },
+        {
+          "r1": 1,
+          "r0": 2
+        },
+        {
+          "r2": 1,
+          "r1": 2
+        },
+        {
+          "r3": 1,
+          "r2": 2
+        },
+        {
+          "r4": 1,
+          "r3": 2
+        },
+        {
+          "r5": 1,
+          "r4": 2
+        },
+        {
+          "r6": 1,
+          "r5": 2
+        },
+        {
+          "r7": 1,
+          "r6": 2
+        },
+        {
+          "r8": 1,
+          "r7": 2
+        },
+        {
+          "r9": 1,
+          "r8": 2
+        },
+        {
+          "r10": 1,
+          "r9": 2
+        },
+        {
+          "r11": 1,
+          "r10": 2
+        }
+      ],
+      "rational_reference_rank": 12,
+      "observed_rank": 12,
+      "integer_nonzeros": 23,
+      "comparison_scope": "Same full-column-independence question on unimodular inputs; fields differ"
+    },
+    {
+      "configuration": "default",
+      "effective_configuration": {
+        "max_order": 6,
+        "marker_leaves": 4,
+        "prime": 1000003,
+        "prime_reason": "Fixed standard prime 1000003, balancing modest integer arithmetic with a non-tiny field; no matrix-dependent prime search or rational-rank claim.",
+        "marker_reason": "floor(max_order/2)+1 strictly exceeds the source side-label leaf budget; the requested order is never reduced to make computation cheaper.",
+        "verification": "all-stages"
+      },
+      "elapsed_seconds": [
+        0.021374916890636086,
+        0.022038666997104883,
+        0.022136791958473623
+      ],
+      "median_elapsed_seconds": 0.022038666997104883,
+      "peak_traced_bytes": 502554,
+      "validation": "PASS",
+      "category": "reconstruction",
+      "case": "finite-order-6",
+      "max_order": 6,
+      "total_columns": 16,
+      "integer_matrix_sha256": "ca71872c4f816aa5e8364656177260ac9a02d83c16f815e7e5fd189855ed881b",
+      "exact_reference": "unchanged integer matrices, known dimensions and separate certificate replay"
+    },
+    {
+      "configuration": "explicit-prime-101",
+      "effective_configuration": {
+        "max_order": 6,
+        "marker_leaves": 4,
+        "prime": 101,
+        "prime_reason": "Explicit prime defines the finite field; rank may differ from other fields.",
+        "marker_reason": "floor(max_order/2)+1 strictly exceeds the source side-label leaf budget; the requested order is never reduced to make computation cheaper.",
+        "verification": "all-stages"
+      },
+      "elapsed_seconds": [
+        0.008617334067821503,
+        0.009926291997544467,
+        0.009133499930612743
+      ],
+      "median_elapsed_seconds": 0.009133499930612743,
+      "peak_traced_bytes": 502401,
+      "validation": "PASS",
+      "category": "reconstruction",
+      "case": "finite-order-6",
+      "max_order": 6,
+      "total_columns": 16,
+      "integer_matrix_sha256": "ca71872c4f816aa5e8364656177260ac9a02d83c16f815e7e5fd189855ed881b",
+      "exact_reference": "unchanged integer matrices, known dimensions and separate certificate replay"
+    }
+  ],
+  "bad_prime_control": {
+    "columns": [
+      {
+        "x": 1000003
+      }
+    ],
+    "rational_reference_rank": 1,
+    "default": {
+      "rank": 0,
+      "column_count": 1,
+      "row_count": 1,
+      "prime": 1000003,
+      "selection_reason": "Fixed standard prime 1000003, balancing modest integer arithmetic with a non-tiny field; no matrix-dependent prime search or rational-rank claim.",
+      "backend": "sparse-modular",
+      "rational_independence_established": false
+    },
+    "explicit_prime_101": {
+      "rank": 1,
+      "column_count": 1,
+      "row_count": 1,
+      "prime": 101,
+      "selection_reason": "Explicit prime defines the finite field; rank may differ from other fields.",
+      "backend": "sparse-modular",
+      "rational_independence_established": true
+    },
+    "interpretation": "Deficiency at the default prime is not rational dependence."
+  },
+  "conclusion": "All admitted cap choices preserve complete exact outputs. Caps control admission, not precision. The finite-field comparisons do not establish a generally optimal prime or rational dependence."
+}

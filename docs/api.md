@@ -1,101 +1,179 @@
-# API reference
+# API and parameter contract
 
-The stable import surface for v0.1.0 is `mechanical_lie.__all__`.
-All coefficient inputs are Python `int` or `fractions.Fraction`; booleans and
-floats are rejected. Returned term dictionaries are copies of immutable state.
+The supported surface is `mechanical_lie.__all__` plus the listed
+`mechanical_lie.algebra` and `mechanical_lie.validation` functions below.
+`_engine` and underscore helpers are implementation details. Use an installed
+package without adding `src` to `PYTHONPATH`.
 
-## Concrete polynomials
+Coordinates are formal q1,...,qd,p1,...,pd, with zero-based Python indices.
+No physical units or scaling are inferred or converted. Use consistent units
+and the Euclidean kinetic energy T=sum(p_i**2)/2; general mass tensors are not
+supported. Exact coefficients/coordinates/scalars are Python `int` or
+`fractions.Fraction`; booleans and floats are rejected. Polynomials and
+Hamiltonians are immutable and `.terms` returns a copy; zero terms are removed.
+There is no conditioning tolerance, accuracy level, approximate backend,
+parallel worker setting or random seed.
 
-`Polynomial(dimension, terms)` stores a finite mapping from nonnegative integer
-exponent tuples to rational coefficients. Tuples have length `2*dimension` in
-the order `(q1,...,qd,p1,...,pd)`. The empty mapping is zero. `dimension` is a
-positive integer. Ordinary `+`, `-`, `*`, division by a nonzero exact scalar,
-and nonnegative integer powers are supported. Mixed dimensions raise `ValueError`.
+## Inputs and outputs
 
-- `phase_space(d) -> (positions, momenta)`: two tuples of length d.
-- `Polynomial.constant(d,c)`, `.variable(d,index)`, `.kinetic(d)`.
-- `.terms -> dict`: a fresh exact sparse representation.
-- `.derivative(index)`: index in `range(2*d)`.
-- `.evaluate(point) -> Fraction`: exactly `2*d` exact coordinates.
-- `poisson(f,g) -> Polynomial`: direct polynomial Poisson differentiation.
+All parameters in this table are required, with no default or inferred problem
+size. Dimension, degree, expression size and rational bit lengths can increase
+work and memory sharply. Exact arithmetic avoids roundoff, not growth.
+
+| Callable / parameter | Type, range and mathematical role | Return and advice |
+| --- | --- | --- |
+| `Polynomial(dimension, terms)` | Positive integer d; mapping exponent tuples to exact coefficients. Each tuple has exactly 2d nonnegative integer entries, q then p. Empty mapping is zero. | Sparse exact polynomial. Choose d and degree from the actual problem; no truncation. |
+| `phase_space(dimension)` | Positive integer d. | Two tuples of d position/momentum polynomials; recommended coordinate constructor. |
+| `Polynomial.constant(dimension, value)` | Positive integer d and exact scalar value. | Constant polynomial in that phase space. |
+| `Polynomial.variable(dimension, index)` | Positive integer d; integer index in range(2*d). | Coordinate polynomial: indices 0,...,d-1 are positions, d,...,2d-1 momenta. |
+| `Polynomial.kinetic(dimension)` | Positive integer d. | Exact Euclidean kinetic polynomial. |
+| `Polynomial.derivative(index)` | Integer index in range(2*d). | Exact partial derivative; index defines the question. |
+| `Polynomial.evaluate(point)` | Sequence of exactly 2d exact coordinates, q then p. | `Fraction`; incorrect coordinate counts fail rather than being truncated. |
+| `poisson(left, right)` | Two same-dimension `Polynomial` objects. | Exact sum(left_q*right_p-left_p*right_q); useful direct reference. |
+| `Hamiltonian(terms)` | Mapping mechanical-tree codes to exact coefficients. `None` denotes T; a tree node is `(momentum_count, children_tuple)` with nonnegative integer count and recursively valid children. | Canonical expression; input rootings are canonicalized and equal terms combined. `(0,())` denotes V. |
+| `kinetic()`, `potential()` | No parameters. | Universal T or one V; dimension is specified only at realization. |
+| `bracket(left, right)` | Two Hamiltonians. | Exact universal Poisson bracket, with {V,T}=p dot grad V. |
+| `commutative_product(left, right)` | Two Hamiltonians with only zero momentum degree (zero allowed). | {right,{left,T}}, the commutative, generally nonassociative gradient product. |
+| `binary_trees(leaves_count)` | Positive integer leaf count. | Tuple of canonical nonplanar binary trees; enumeration grows rapidly and is not silently capped. |
+| `potential_tree(tree)` | Canonical commutative binary tree: leaf `()` or sorted pair of valid trees. | Its gradient-product Hamiltonian. |
+
+Polynomial +,-,* accept same-dimension polynomials or exact scalars. Division
+requires a nonzero exact scalar; powers require a nonnegative integer exponent.
+Hamiltonian +,- require Hamiltonians; scalar multiplication/division require
+exact scalars, with nonzero divisor. Ordinary Hamiltonian multiplication is
+unsupported. These operands/powers/divisors define the mathematical inputs.
+`.orders` and `.momentum_degrees` are sorted distinct tuples, empty for zero.
+
+## Complete realization and its resource guard
+
+`h.realize(potential, *, max_assignments=100000) -> Polynomial` is the input-only
+default path. `h.realization_plan(potential, *, max_assignments=100000)` exposes
+its effective configuration without differentiating or enumerating assignments.
+
+| Parameter | Contract and rule | Recommendation and accuracy/cost effect |
+| --- | --- | --- |
+| `potential` | Required position-only Polynomial; d comes from this input. Momentum dependence fails. | Defines V and d; nonpolynomial potentials are unavailable. |
+| `max_assignments` | Positive Python integer, default 100000 per nonzero tree. The automatic work estimate is d**(E+F), E thick edges and F momentum leaves. | Keep the rounded engineering safeguard for small work. A smaller cap is a conservative admission policy; raising it is an explicit resource decision. It never improves accuracy. |
+
+All trees are checked before constructing polynomial workspaces. A count equal
+to the cap is admitted; a larger one raises `ValueError`. There is no partial,
+truncated or approximate polynomial return. Every admitted cap gives the same
+complete exact output. The cap does not bound total assignments across trees,
+polynomial term growth, coefficient bits, canonicalization, total memory or
+wall time. Planning must itself read the supplied expression. It is not a
+hardware capacity check. No unchecked automatic enlargement occurs.
+
+The frozen `RealizationPlan` contains `dimension`, `tree_assignments` (in
+`.terms` iteration order), effective `max_assignments`, `backend` and
+`selection_reason`. Derived properties are `largest_assignments`,
+`total_assignments` and `within_limit`; `.to_dict()` returns a JSON-serializable
+copy. A kinetic term counts as zero contraction assignments, not zero work.
+An empty expression has no assignments. Constant potentials retain conservative
+tree counts; no derivative-zero shortcut is promised. An over-cap plan is
+returned for inspection, whereas `realize` rejects it.
 
 ```python
-from fractions import Fraction
-from mechanical_lie import phase_space, poisson
-q, p = phase_space(2)
-v = q[0]**2 / 2 + q[0]*q[1] + q[1]**4 / 4
-print(poisson(v, p[0]))
-print(v.evaluate((Fraction(1,2), 1, 0, 0)))
+from mechanical_lie import bracket, kinetic, phase_space, potential
+q, p = phase_space(1)
+v = q[0]**2/2 + q[0]**4/4
+h = bracket(potential(), bracket(potential(), kinetic()))
+answer = h.realize(v)
+print(h.realization_plan(v).to_dict())
+assert h.realize(v, max_assignments=1000) == answer
 ```
 
-## Universal mechanical expressions
+## Finite-field rank
 
-`kinetic()` and `potential()` create universal Hamiltonians for `T=|p|²/2` and
-`V(q)`. `bracket(f,g)` expands the mechanical Poisson bracket with the same sign
-as the polynomial API. Linear arithmetic and exact scalar scaling return new
-`Hamiltonian` objects; ordinary multiplication of Hamiltonians is unsupported.
+`modular_rank(columns, prime=1000003) -> int` preserves its original return type.
+`modular_rank_report(columns, prime=1000003) -> ModularRankReport` performs the
+same exact calculation and exposes the effective field.
 
-`Hamiltonian(terms)` maps canonical mechanical trees to rational coefficients.
-A tree is recursively `(momentum_count, children_tuple)`; `None` denotes T.
-Input tree rootings are canonicalized. The singleton `(0,())` denotes V.
-Every momentum count must be a nonnegative integer.
+| Parameter | Type/default/role | Selection advice and effects |
+| --- | --- | --- |
+| `columns` | Required finite iterable of mappings from string rows to integer coefficients. Fractions, floats and booleans are rejected. Missing rows mean zero; empty columns/iterables are valid. | Materialized once. Shape, fill-in and coefficient bits affect time/storage. |
+| `prime` | Prime Python integer >=2; default 1000003. Validated before consuming columns. | An explicit prime defines the field. For rational-independence checks the standard moderate prime is an engineering choice, not an optimal or universally good prime. Small primes such as 2/101 are cheap controls. Large primes increase integer arithmetic and trial-division primality-check cost. No matrix-dependent/random prime search or automatic retry. |
 
-- `.terms`: a fresh mapping; equal canonical terms are combined.
-- `.orders`: sorted distinct original-letter orders of its nonzero terms.
-- `.momentum_degrees`: sorted distinct momentum degrees; empty for zero.
-- `.realize(v, max_assignments=100000)`: a complete exact polynomial for a
-  position-only Polynomial v. Momentum-dependent potentials raise `ValueError`.
-  A tree with more than the cap's index assignments raises `ValueError` before
-  enumerating those assignments. The cap is per tree and does not bound total
-  polynomial expansion size or runtime.
+The frozen report contains exact `rank`, `column_count`, nonzero integer input
+`row_count`, actual `prime`, `backend='sparse-modular'`, `selection_reason`, and
+`.to_dict()`. `rational_independence_established` is true exactly when rank equals
+the number of columns, including the empty family. False means this calculation
+has not established full rational independence; it does not mean dependence.
+Changing the prime can change rank because the field changed, not roundoff or
+conditioning. Input support may count coefficients that vanish modulo p.
+For example, column {'x':2} has rank 1 at the default prime and rank 0 at prime 2.
 
-`commutative_product(f,g)` is `{g,{f,T}}` for degree-zero inputs. It realizes
-`∇f·∇g`, so it is commutative but generally nonassociative.
-`binary_trees(n)` enumerates canonical nonplanar binary trees with n leaves;
-`potential_tree(tree)` evaluates that binary-tree product. Leaf `()` is V.
-The enumeration grows rapidly; there is no silent order truncation.
+## Finite reconstruction and replay
 
-## Advanced associative-word operations
+`validation.reconstruction_plan(max_order, *, prime=1000003)` returns a frozen
+`ReconstructionPlan` without enumeration/filesystem writes.
+`validation.rebuild_basis(max_order, output, *, prime=1000003)` uses the same
+policy and returns a summary with `effective_configuration`; saved
+`audit_summary.json` and returned summary agree.
 
-`mechanical_lie.algebra` exposes the already implemented low-level integer
-operations. A commutative tree is `()` or a sorted pair of such trees;
-`star(a,b)` constructs a sorted pair, and `comb(n)` gives an n-leaf comb.
-Letters are `A=('A',)` and `Y(t)=('Y',t)`. A word is a tuple of these letters.
-An associative polynomial is a dictionary `word -> integer coefficient`.
+| Parameter or automatic output | Contract | Recommendation and effect |
+| --- | --- | --- |
+| `max_order` | Required Python integer 2–18; finite original-letter target. | Start at 6 or below for inspection; the fixed demo uses 10. Changing order changes the question. Upper supported order 18 is not a resource guarantee and is not run in CI. |
+| `output` | Required string/path-like value resolved by `Path`, naming a new directory. | Parents are created; existing output raises `FileExistsError`. Invalid policy values fail before creation. Disk stores exact matrices/pivots/summaries. |
+| `prime` | Same prime/default as modular rank. | Deficiency raises `ValidationError` because this full-rank finite check did not pass, not because dependence over the rationals was proved. |
+| `marker_leaves` (output only) | Automatically max_order//2+1, using a comb. | Strictly exceeds the source side-label leaf budget in this construction. No independent marker override; this is mathematical bookkeeping, not a hardware guess. |
+| `verification` (output only) | Always `all-stages` in this API. | No fast mode that silently skips required rank/reconstruction. |
 
-`lyndon(word)` tests the fixed lexicographic order; `lie_expansion(word)` applies
-standard Lyndon bracketing and returns its associative expansion. It requires
-a nonempty Lyndon word. `commutator(f,g)` uses associative multiplication.
+The plan records max_order, actual prime, marker_leaves, `prime_reason` and `marker_reason`;
+`.to_dict()` gives a copy. The requested target is never reduced to fit resources.
+Failure can leave partial files; retry in a fresh directory. An elapsed time,
+hash or complete finite summary is not an all-order theorem.
 
-`adjoint_x(marker,f)` computes `[marker,f]` in normal PBW form, returning a
-mapping `(word,potential_factor) -> integer coefficient`. `None` means no
-potential factor, while `word=()` is the empty word. The purity conclusions
-used for degree lowering apply to homogeneous Lie polynomials, not arbitrary
-associative inputs. `derivative_A` replaces one A at a time by Y(marker).
-`project_large_labels(f,M)` deletes words with a Y label of more than M leaves.
-`retract_marker(f,marker)` replaces exactly Y(marker) by A.
+`validation.verify_certificate_block(data) -> int` requires a mapping with
+`order, degree, prime, dimension, rank, columns, pivots, source_basis,
+sha256_without_hash`. Counts must be valid/consistent integers, columns must map
+string rows to integers, the modulus must be prime, and every pivot/hash must
+match. Corruption or a dependent block raises `ValidationError` (a `ValueError`
+subclass). Replay checks a supplied matrix, not its symbolic origin.
+`validation.digest(payload) -> str` takes a JSON-serializable mapping with
+string keys and hashes canonical JSON, excluding `sha256_without_hash`.
+Recomputing a digest does not validate a matrix or its provenance.
 
-For a faithful higher-degree marker test, marker size must strictly exceed
-each old Y label size. For degree-one word separation it must exceed the sum
-of side-label leaf counts. These are explicit mathematical preconditions.
-The advanced tuple routines assume well-formed input representations; the
-validated object API above is the recommended starting point.
+## Advanced exact words and markers
 
-## Finite validation
+`algebra.A=('A',)` and `algebra.B=()` are constants. A tree is `()` or a sorted
+pair of trees. A word is a tuple of A or Y(tree) letters; `()` is the associative
+unit. A word polynomial maps words to exact int/Fraction coefficients. These
+representations are validated at the public boundary. Structural caches may grow
+for the process lifetime; mapping caches return copies (see methods).
+Every parameter below is required, with no default. Leaf/word sizes are
+combinatorial counts, not accuracy or hardware settings.
 
-`modular_rank(columns, prime=1000003) -> int` accepts integer sparse columns
-with string row labels, rejects composite/noninteger moduli and inexact matrix
-coefficients. Full column rank modulo a prime implies rational independence;
-deficiency at that prime alone does not prove rational dependence.
+| Callable / parameters | Valid values, return and advice |
+| --- | --- |
+| `Y(t)`, `leaves(t)` | Canonical tree t; return its letter or positive leaf count. |
+| `star(a,b)` | Two canonical trees; return their sorted pair. Prefer this constructor for pair ordering. |
+| `comb(n)` | Positive integer n; return n-leaf comb. More leaves increase structural work. |
+| `lyndon(w)` | Valid word w; return bool in fixed lexicographic order. Empty word is false. |
+| `lie_expansion(w)` | Nonempty Lyndon word w; return standard associative expansion. Otherwise `ValueError`. Long words can have many terms. |
+| `commutator(a,b)` | Two exact word polynomials; return a*b-b*a. Product support may grow multiplicatively. |
+| `adjoint_x(x,f)` | Canonical marker x, exact word polynomial f; return normal PBW mapping `(word,potential_factor) -> coefficient`, with `None` meaning no factor. No homogeneous Lie purity is inferred for arbitrary f. |
+| `derivative_A(f,x)` | Exact word polynomial f, canonical marker x; replace each A in turn by Y(x). |
+| `project_large_labels(f,M)` | Exact word polynomial f; integer threshold M>=0. Delete words with a Y label having more than M leaves. M=0 keeps A words only. This exact projection changes the input, not numerical accuracy. |
+| `retract_marker(f,x)` | Exact word polynomial f, canonical marker x; replace exactly Y(x) by A and combine terms. |
 
-`mechanical_lie.validation.rebuild_basis(max_order, output, prime=1000003)`
-requires order 2–18, a prime, and a new output directory. It checks all declared
-stages and saves integer matrices/pivots. The small shipped case uses order 10.
-The returned summary explicitly lists checked/skipped stages. A skipped stage
-is never an overall PASS. Order 18 can require substantial memory and is an
-explicit, user-initiated operation, not an installation or CI test.
+A faithful higher-degree marker argument requires marker size greater than each
+old Y label size. Degree-one separation requires it greater than the sum of
+side-label leaf counts. These are promises of that use, not conditions inferred
+by generic word operations. The finite reconstruction's automatic rule must not
+be transferred to arbitrary words or treated as a purity check.
 
-`verify_certificate_block(record) -> rank` checks a block's canonical JSON
-digest, integer matrix, dimensions and every modular pivot. Malformed or corrupt
-records raise `ValidationError` (a `ValueError` subclass). Replay checks the
-supplied matrix; rebuilding checks its relationship to the bracket construction.
+## Errors and compatibility
+
+Type/representation failures raise `TypeError`/`ValueError` with a parameter or
+structural explanation; zero division raises `ZeroDivisionError`. Unavailable
+backend keywords raise `TypeError`, without fallback. There is no supported
+None/auto sentinel for method settings or hidden optional arithmetic backend.
+SymPy and Matplotlib are test/figure extras, not runtime dependencies.
+
+v0.2.0 preserves valid v0.1.0 calls, integer defaults, complete exact outputs,
+Polynomial/int return types for realize/modular_rank. Diagnostic APIs and the
+reconstruction summary field are additive. Invalid primes fail earlier, all
+contraction guards precede workspaces, and malformed advanced trees/words now
+fail at the boundary. Old releases/tags are not rewritten. See the
+[policy tests](../tests/test_parameter_policy.py), [matched benchmarks](../bench/README.md)
+and [methods/limits](methods.md).

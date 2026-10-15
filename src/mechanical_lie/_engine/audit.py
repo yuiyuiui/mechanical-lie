@@ -35,14 +35,14 @@ from .core import (
     words_of_weight,
 )
 from .errors import ValidationError
+from .._policy import DEFAULT_PRIME, marker_for_order
 
 
 def run_audit(
-    max_order: int, output: Path, prime: int = 1000003, skip_tree_rank: bool = False
+    max_order: int, output: Path, prime: int = DEFAULT_PRIME, skip_tree_rank: bool = False
 ) -> dict:
     """Rebuild every basis column through max_order and save replayable certificates."""
-    if not 2 <= max_order <= 18:
-        raise ValueError("max_order must be between 2 and 18")
+    M = marker_for_order(max_order)
     if not is_prime(prime):
         raise ValueError("prime modulus required")
     out = Path(output)
@@ -50,7 +50,6 @@ def run_audit(
     start = time.time()
     N = max_order
     alphabet = tuple(sorted([A] + [Y(t) for n in range(1, N // 2 + 1) for t in magmatic(n)]))
-    M = N // 2 + 1
     marker = comb(M)
     b = {(0, ()): 1}
     a = {None: 1}

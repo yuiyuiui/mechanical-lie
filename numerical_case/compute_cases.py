@@ -137,7 +137,7 @@ def compute(output: Path):
     )
     checks = {
         "fixed_case_order": 10,
-        "prime": 1000003,
+        "prime": summary["prime"],
         "total_columns": summary["total_dimension"],
         "blocks_replayed": len(blocks),
         "checked_stages": summary["checked_stages"],
@@ -166,13 +166,14 @@ def compute(output: Path):
         "python": platform.python_version(),
         "actual_parameters": {
             "reconstruction_max_order": 10,
-            "prime": 1000003,
+            "prime": summary["prime"],
             "coefficient_checks_max_order": 6,
             "dimensions": [1, 2],
             "potential_degree": 4,
             "workers": 1,
         },
         "commit_observed": revision,
+        "effective_configuration": summary["effective_configuration"],
         "source_sha256": {
             f.relative_to(ROOT).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest()
             for f in source_files
