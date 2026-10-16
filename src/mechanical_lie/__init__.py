@@ -13,7 +13,7 @@ from .hamiltonian import (
 from .linear import ModularRankReport, modular_rank, modular_rank_report
 from .polynomial import Polynomial, phase_space, poisson
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __all__ = [
     "Hamiltonian",
     "Polynomial",

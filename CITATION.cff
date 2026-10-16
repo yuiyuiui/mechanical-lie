@@ -2,8 +2,7 @@ cff-version: 1.2.0
 message: "Please cite this software release and the relevant mathematical sources."
 type: software
 title: "Mechanical Lie: exact symbolic mechanical Hamiltonian brackets"
-version: 0.2.0
-date-released: "2026-10-15"
+version: 0.2.1
 license: BSD-3-Clause
 authors:
   - family-names: Jin

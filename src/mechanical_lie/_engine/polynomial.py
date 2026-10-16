@@ -34,11 +34,36 @@ def pdiff(p, i):
 
 
 def poisson(p, q, d):
+    """Contract monomial pairs directly, retaining exact coefficients.
+
+    Integer-valued rational coefficients stay integers during contraction;
+    the public Polynomial constructor restores its uniform Fraction interface.
+    No derivative or product polynomial is materialized for each coordinate.
+    """
+
+    def scalar(c):
+        return c.numerator if isinstance(c, Fraction) and c.denominator == 1 else c
+
+    left = [(a, scalar(c)) for a, c in p.items()]
+    right = [(b, scalar(c)) for b, c in q.items()]
     out = {}
-    for i in range(d):
-        out = e.add(out, pmul(pdiff(p, i), pdiff(q, i + d)))
-        out = e.add(out, pmul(pdiff(p, i + d), pdiff(q, i)), -1)
-    return out
+    for a, c in left:
+        for b, coefficient in right:
+            product = None
+            powers = None
+            for i in range(d):
+                factor = a[i] * b[i + d] - a[i + d] * b[i]
+                if not factor:
+                    continue
+                if product is None:
+                    product = c * coefficient
+                    powers = tuple(x + y for x, y in zip(a, b))
+                alpha = list(powers)
+                alpha[i] -= 1
+                alpha[i + d] -= 1
+                key = tuple(alpha)
+                out[key] = out.get(key, 0) + product * factor
+    return e.clean(out)
 
 
 def peval(p, point):

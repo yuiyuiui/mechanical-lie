@@ -1,0 +1,225 @@
+{
+  "format_version": 1,
+  "preflight": "ASSESSED_RUN",
+  "evidence": "CLAIM_FACING",
+  "placement": "LOCAL_EXECUTION; one worker and one BLAS/OpenMP thread",
+  "python": "3.13.3",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "dependencies": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0",
+    "python-flint": "0.8.0"
+  },
+  "timer": "perf_counter; validation and profiling excluded from timings",
+  "memory": "Fresh-worker absolute peak RSS after timing includes imports, inputs, outputs and validation. Python traced peak is one separate call and excludes untraced native allocations.",
+  "cost": "Setup/import, first call and warm public calls are separated. Internal caches may be reused.",
+  "results": [
+    {
+      "case": "small",
+      "settings": {
+        "dimension": 1,
+        "left_terms": 10,
+        "right_terms": 10,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 13,
+        "output_sha256": "ee032fc11cb36b1619aecc578467ef81b4ec9ad0f4bd89147b92232cce8797d9"
+      },
+      "source_sha256": "abb5097ca732bf289e411b99043591b6c6272ab7efcc837df805764bc22f0ebe",
+      "setup_seconds": 0.14343441603705287,
+      "first_call_seconds": 0.00014416698832064867,
+      "warm_seconds": [
+        0.00013475003652274609,
+        0.0001170419855043292,
+        0.00012091593816876411,
+        0.00012750003952533007,
+        0.00012512493412941694,
+        0.00011216709390282631,
+        0.00012345798313617706
+      ],
+      "median_seconds": 0.00012345798313617706,
+      "minimum_seconds": 0.00011216709390282631,
+      "maximum_seconds": 0.00013475003652274609,
+      "python_traced_peak_bytes": 9952,
+      "fresh_worker_peak_rss_bytes": 74498048,
+      "profile": "         2347 function calls in 0.000 seconds\n\n   Ordered by: cumulative time\n   List reduced from 33 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.000    0.000 core_cases.py:36(call)\n        1    0.000    0.000    0.000    0.000 polynomial.py:172(poisson)\n        1    0.000    0.000    0.000    0.000 polynomial.py:36(poisson)\n        2    0.000    0.000    0.000    0.000 polynomial.py:18(pmul)\n      181    0.000    0.000    0.000    0.000 fractions.py:663(forward)\n        2    0.000    0.000    0.000    0.000 associative.py:15(add)\n      122    0.000    0.000    0.000    0.000 fractions.py:792(_mul)\n       39    0.000    0.000    0.000    0.000 fractions.py:677(reverse)\n        4    0.000    0.000    0.000    0.000 polynomial.py:26(pdiff)\n       98    0.000    0.000    0.000    0.000 fractions.py:760(_add)\n      220    0.000    0.000    0.000    0.000 fractions.py:334(_from_coprime_ints)\n        1    0.000    0.000    0.000    0.000 polynomial.py:38(__init__)\n      106    0.000    0.000    0.000    0.000 fractions.py:203(__new__)\n      301    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}\n\n\n",
+      "implementation": "baseline"
+    },
+    {
+      "case": "small",
+      "settings": {
+        "dimension": 1,
+        "left_terms": 10,
+        "right_terms": 10,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 13,
+        "output_sha256": "ee032fc11cb36b1619aecc578467ef81b4ec9ad0f4bd89147b92232cce8797d9"
+      },
+      "source_sha256": "1aafc437907e5c8b492c6beab75a7f6e8d4514dc66292b6722c02a734b996af1",
+      "setup_seconds": 0.13556466693989933,
+      "first_call_seconds": 5.370797589421272e-05,
+      "warm_seconds": [
+        4.487507976591587e-05,
+        4.175002686679363e-05,
+        4.358298610895872e-05,
+        4.541594535112381e-05,
+        4.470802377909422e-05,
+        4.404096398502588e-05,
+        4.2792060412466526e-05
+      ],
+      "median_seconds": 4.404096398502588e-05,
+      "minimum_seconds": 4.175002686679363e-05,
+      "maximum_seconds": 4.541594535112381e-05,
+      "python_traced_peak_bytes": 6448,
+      "fresh_worker_peak_rss_bytes": 74579968,
+      "profile": "         498 function calls in 0.000 seconds\n\n   Ordered by: cumulative time\n   List reduced from 25 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.000    0.000 core_cases.py:36(call)\n        1    0.000    0.000    0.000    0.000 polynomial.py:172(poisson)\n        1    0.000    0.000    0.000    0.000 polynomial.py:36(poisson)\n        1    0.000    0.000    0.000    0.000 polynomial.py:38(__init__)\n       13    0.000    0.000    0.000    0.000 polynomial.py:12(exact)\n      180    0.000    0.000    0.000    0.000 polynomial.py:60(<genexpr>)\n       20    0.000    0.000    0.000    0.000 polynomial.py:44(scalar)\n       13    0.000    0.000    0.000    0.000 {built-in method builtins.any}\n        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}\n       13    0.000    0.000    0.000    0.000 fractions.py:203(__new__)\n       64    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}\n       60    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}\n       39    0.000    0.000    0.000    0.000 polynomial.py:46(<genexpr>)\n       13    0.000    0.000    0.000    0.000 fractions.py:1021(__bool__)\n\n\n",
+      "implementation": "candidate"
+    },
+    {
+      "case": "medium",
+      "settings": {
+        "dimension": 2,
+        "left_terms": 70,
+        "right_terms": 35,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 126,
+        "output_sha256": "310a0072fa13b1187a644671240870df68b4dfc158f9c1fe0f95e87f0142a563"
+      },
+      "source_sha256": "1aafc437907e5c8b492c6beab75a7f6e8d4514dc66292b6722c02a734b996af1",
+      "setup_seconds": 0.21275012497790158,
+      "first_call_seconds": 0.0012559579918161035,
+      "warm_seconds": [
+        0.0012897909618914127,
+        0.0012417080579325557,
+        0.0011895839124917984,
+        0.0012198330368846655,
+        0.001182833919301629,
+        0.00121870799921453,
+        0.0011879999656230211
+      ],
+      "median_seconds": 0.00121870799921453,
+      "minimum_seconds": 0.001182833919301629,
+      "maximum_seconds": 0.0012897909618914127,
+      "python_traced_peak_bytes": 30096,
+      "fresh_worker_peak_rss_bytes": 75661312,
+      "profile": "         12242 function calls in 0.002 seconds\n\n   Ordered by: cumulative time\n   List reduced from 25 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.002    0.002 core_cases.py:36(call)\n        1    0.000    0.000    0.002    0.002 polynomial.py:172(poisson)\n        1    0.002    0.002    0.002    0.002 polynomial.py:36(poisson)\n     8140    0.000    0.000    0.000    0.000 polynomial.py:60(<genexpr>)\n        1    0.000    0.000    0.000    0.000 polynomial.py:38(__init__)\n     1896    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}\n      126    0.000    0.000    0.000    0.000 polynomial.py:12(exact)\n      126    0.000    0.000    0.000    0.000 {built-in method builtins.any}\n      630    0.000    0.000    0.000    0.000 polynomial.py:46(<genexpr>)\n      126    0.000    0.000    0.000    0.000 fractions.py:203(__new__)\n      105    0.000    0.000    0.000    0.000 polynomial.py:44(scalar)\n      488    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}\n        1    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}\n      126    0.000    0.000    0.000    0.000 fractions.py:1021(__bool__)\n\n\n",
+      "implementation": "candidate"
+    },
+    {
+      "case": "medium",
+      "settings": {
+        "dimension": 2,
+        "left_terms": 70,
+        "right_terms": 35,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 126,
+        "output_sha256": "310a0072fa13b1187a644671240870df68b4dfc158f9c1fe0f95e87f0142a563"
+      },
+      "source_sha256": "abb5097ca732bf289e411b99043591b6c6272ab7efcc837df805764bc22f0ebe",
+      "setup_seconds": 0.21420366608072072,
+      "first_call_seconds": 0.002796540968120098,
+      "warm_seconds": [
+        0.0026200830470770597,
+        0.002709291991777718,
+        0.0026916249189525843,
+        0.0027190829860046506,
+        0.002720832941122353,
+        0.0027093749959021807,
+        0.0027023330330848694
+      ],
+      "median_seconds": 0.002709291991777718,
+      "minimum_seconds": 0.0026200830470770597,
+      "maximum_seconds": 0.002720832941122353,
+      "python_traced_peak_bytes": 66800,
+      "fresh_worker_peak_rss_bytes": 75890688,
+      "profile": "         54384 function calls in 0.008 seconds\n\n   Ordered by: cumulative time\n   List reduced from 33 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.008    0.008 core_cases.py:36(call)\n        1    0.000    0.000    0.008    0.008 polynomial.py:172(poisson)\n        1    0.000    0.000    0.008    0.008 polynomial.py:36(poisson)\n        4    0.002    0.000    0.006    0.001 polynomial.py:18(pmul)\n     4778    0.001    0.000    0.004    0.000 fractions.py:663(forward)\n     2804    0.001    0.000    0.002    0.000 fractions.py:792(_mul)\n        4    0.000    0.000    0.002    0.000 associative.py:15(add)\n     2604    0.001    0.000    0.001    0.000 fractions.py:760(_add)\n     5408    0.001    0.000    0.001    0.000 fractions.py:334(_from_coprime_ints)\n      630    0.000    0.000    0.001    0.000 fractions.py:677(reverse)\n     6117    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}\n     1460    0.000    0.000    0.000    0.000 fractions.py:203(__new__)\n    10500    0.000    0.000    0.000    0.000 polynomial.py:22(<genexpr>)\n     6868    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x101373cf0}\n\n\n",
+      "implementation": "baseline"
+    },
+    {
+      "case": "large",
+      "settings": {
+        "dimension": 2,
+        "left_terms": 126,
+        "right_terms": 70,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 330,
+        "output_sha256": "7ccba34c6c287e007d0dc6bd795661fab2d629697263aa33a4485a703f925985"
+      },
+      "source_sha256": "abb5097ca732bf289e411b99043591b6c6272ab7efcc837df805764bc22f0ebe",
+      "setup_seconds": 0.4160915419925004,
+      "first_call_seconds": 0.01115049992222339,
+      "warm_seconds": [
+        0.010788499959744513,
+        0.010847791912965477,
+        0.01075054204557091,
+        0.010624125017784536,
+        0.01077629195060581,
+        0.010751875001005828,
+        0.010652582976035774
+      ],
+      "median_seconds": 0.010751875001005828,
+      "minimum_seconds": 0.010624125017784536,
+      "maximum_seconds": 0.010847791912965477,
+      "python_traced_peak_bytes": 166984,
+      "fresh_worker_peak_rss_bytes": 77922304,
+      "profile": "         218408 function calls in 0.032 seconds\n\n   Ordered by: cumulative time\n   List reduced from 33 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.032    0.032 core_cases.py:36(call)\n        1    0.000    0.000    0.032    0.032 polynomial.py:172(poisson)\n        1    0.000    0.000    0.031    0.031 polynomial.py:36(poisson)\n        4    0.007    0.002    0.026    0.006 polynomial.py:18(pmul)\n    21010    0.004    0.000    0.017    0.000 fractions.py:663(forward)\n    11540    0.004    0.000    0.007    0.000 fractions.py:792(_mul)\n    11120    0.003    0.000    0.006    0.000 fractions.py:760(_add)\n    22660    0.004    0.000    0.005    0.000 fractions.py:334(_from_coprime_ints)\n        4    0.001    0.000    0.004    0.001 associative.py:15(add)\n     1650    0.001    0.000    0.003    0.000 fractions.py:677(reverse)\n    49000    0.002    0.000    0.002    0.000 polynomial.py:22(<genexpr>)\n    26380    0.002    0.000    0.002    0.000 {built-in method __new__ of type object at 0x105ca7cf0}\n    24405    0.001    0.000    0.002    0.000 {built-in method builtins.isinstance}\n    34200    0.001    0.000    0.001    0.000 {built-in method math.gcd}\n\n\n",
+      "implementation": "baseline"
+    },
+    {
+      "case": "large",
+      "settings": {
+        "dimension": 2,
+        "left_terms": 126,
+        "right_terms": 70,
+        "arithmetic": "exact rational"
+      },
+      "validation": {
+        "passed": true,
+        "full_polynomial_reference": "SymPy derivatives",
+        "terms": 330,
+        "output_sha256": "7ccba34c6c287e007d0dc6bd795661fab2d629697263aa33a4485a703f925985"
+      },
+      "source_sha256": "1aafc437907e5c8b492c6beab75a7f6e8d4514dc66292b6722c02a734b996af1",
+      "setup_seconds": 0.39571841596625745,
+      "first_call_seconds": 0.004666500026360154,
+      "warm_seconds": [
+        0.00487445795442909,
+        0.004630333976820111,
+        0.004552540951408446,
+        0.0046775840455666184,
+        0.004587374976836145,
+        0.004699624958448112,
+        0.004603125038556755
+      ],
+      "median_seconds": 0.004630333976820111,
+      "minimum_seconds": 0.004552540951408446,
+      "maximum_seconds": 0.00487445795442909,
+      "python_traced_peak_bytes": 73856,
+      "fresh_worker_peak_rss_bytes": 77627392,
+      "profile": "         47810 function calls in 0.010 seconds\n\n   Ordered by: cumulative time\n   List reduced from 25 to 14 due to restriction <14>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.010    0.010 core_cases.py:36(call)\n        1    0.000    0.000    0.010    0.010 polynomial.py:172(poisson)\n        1    0.007    0.007    0.009    0.009 polynomial.py:36(poisson)\n    33900    0.001    0.000    0.001    0.000 polynomial.py:60(<genexpr>)\n        1    0.000    0.000    0.001    0.001 polynomial.py:38(__init__)\n     8484    0.001    0.000    0.001    0.000 {method 'get' of 'dict' objects}\n      330    0.000    0.000    0.000    0.000 polynomial.py:12(exact)\n      330    0.000    0.000    0.000    0.000 {built-in method builtins.any}\n     1650    0.000    0.000    0.000    0.000 polynomial.py:46(<genexpr>)\n      330    0.000    0.000    0.000    0.000 fractions.py:203(__new__)\n      196    0.000    0.000    0.000    0.000 polynomial.py:44(scalar)\n     1191    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}\n        1    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}\n      330    0.000    0.000    0.000    0.000 fractions.py:1021(__bool__)\n\n\n",
+      "implementation": "candidate"
+    }
+  ]
+}
