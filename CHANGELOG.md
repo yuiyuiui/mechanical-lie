@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (release candidate)
+
+Replace temporary derivative/product polynomials with direct exact monomial-pair contraction. Add full SymPy coefficient controls and paired benchmarks.
+Public mathematical contracts are unchanged.
+
+
 ## 0.2.0 — 2026-10-15
 
 - Preserve `realize`'s 100000 assignment guard, the 1000003 modular prime,

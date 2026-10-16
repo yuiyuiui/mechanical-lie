@@ -180,3 +180,9 @@ AI development, tests, CI and a public release are not independent human review
 or formal proof certification. The associated [mathematical manuscript](https://github.com/yuiyuiui/AIM/blob/8dc12e3f97d7c2230981ad0d46ab00aa06188bfd/research/solutions/519-euclidean-mechanical-lie-algebra/paper/main.pdf)
 and [submission](https://github.com/MColbrook/AIM/pull/40) are separate from the
 software's finite validation claims.
+
+## Core optimization evidence
+
+See the [paired time and memory benchmark](bench/README.md) for profiles,
+independent checks, limitations and reproduction commands, and
+[release readiness](docs/RELEASE_READINESS.md) for installed-package evidence.
